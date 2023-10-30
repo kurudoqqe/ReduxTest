@@ -1,44 +1,40 @@
 import React, {useState} from 'react'
 import styles from './App.module.css'
-import TodoList from "./TodoList";
+import TodoItem from "./TodoItem";
+import InputList from "./InputList";
 
 const App = () => {
-    const [Text, setText] = useState(null)
+    const [Text, setText] = useState('')
     const [Todos, setTodos] = useState([])
     const AddTodo = () => {
-        if (!Text) {}
-        else {
-            setTodos([
-                ...Todos,
-                {
-                    id: new Date().toISOString(),
-                    Text,
-                    completed: false
-                }
-            ])
-            setText(null)
-        }
+        if (Text === '') return null
+        setTodos([
+            ...Todos,
+            {
+                text: Text,
+                id: new Date().toISOString(),
+                isCompleted: false
+            }])
+        setText('')
     }
-    const DeleteTodo = (todoId) => {
-        setTodos(Todos.filter(todo => todo.id !== todoId))
+    const DeleteTodo = (id) => {
+        setTodos(Todos.filter((todo) => todo.id !== id))
     }
-    const toggleTodoChecked = (todoId) => {
-        setTodos(Todos.map(todo => {
-            if (todo.id !== todoId) return null
-            return {
-                ...todo,
-                completed: !todo.completed
-            }
-        }))
+    const ToggleChecked = (id) => {
+        setTodos(Todos.map((todo) => {
+                if (todo.id !== id) return todo
+                    return {
+                        ...todo,
+                        isCompleted: !todo.isCompleted
+                    }
+                }))
     }
-        return (
-            <div className={styles.App}>
-                <label>
-                    <input onChange={event => setText(event.target.value)}/>
-                    <button onClick={AddTodo}>Add Todo</button>
-                </label>
-                <TodoList Todos={Todos} DeleteTodo={DeleteTodo} toggleTodoChecked={toggleTodoChecked}/>
-            </div>
-        )
+    return (
+        <div className={styles.App}>
+            <InputList Text={Text} setText={setText} AddTodo={AddTodo}/>
+            <TodoItem Todos={Todos} func={{DeleteTodo, ToggleChecked}}/>
+        </div>
+    )
 }
+
 export default App

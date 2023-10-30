@@ -1,18 +1,13 @@
 import React from 'react'
-import styles from "./App.module.css";
+import TodoList from "./TodoList";
 
-const TodoItem = ({id, Text, completed, DeleteTodo, toggleTodoChecked}) => {
+const TodoItem = ({Todos, func}) => {
     return (
-        <li key={id} className={styles.li}>
-            <input
-                type={"checkbox"}
-                checked={completed}
-                onChange={() => toggleTodoChecked(id)}
-                className={styles.check}
-            />
-            <span>{Text}</span>
-            <span className={styles.delete} onClick={() => DeleteTodo(id)}>&times;</span>
-        </li>
+        <ul style={{listStyle:"none"}}>
+            {Todos.map((todo) => (
+                <TodoList key={todo.id} todo={todo} func={func}/>
+            ))}
+        </ul>
     )
 }
 
